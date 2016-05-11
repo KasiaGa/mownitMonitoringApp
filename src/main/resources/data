@@ -1,0 +1,39 @@
+EventLog;6013;Information;Czas pracy systemu wynosi 166939 s.
+BTHUSB;18;Information;System Windows nie może przechowywać kodów uwierzytelniania Bluetooth (kluczy powiązań) w adapterze lokalnym. Klawiatury Bluetooth mogą nie działać w systemie BIOS podczas uruchamiania systemu.
+Kernel-Power;131;Information;Czasy S3 oprogramowania układowego. Liczba wznowień (ResumeCount): 2, pełne wznowienie (FullResume): 185, średnie wznowienie (AverageResume): 187
+MEIx64;2;Information;Intel(R) Management Engine Interface driver has started successfully.
+DistributedCOM;10010;Error;Serwer {BF6C1E47-86EC-4194-9CE5-13C15DCB2001} nie zarejestrował się w modelu DCOM w wymaganym czasie.
+Kernel-Processor-Power;55;Warning;Szybkość procesora 0 w grupie 0 jest ograniczana przez systemowe oprogramowanie układowe. Procesor miał ograniczony stan wydajności przez 189573 s od ostatniego raportu.
+EventLog;6008;Error;Poprzednie zamknięcie systemu było nieoczekiwane.
+WHEA-Logger;19;Warning;Wystąpił skorygowany błąd sprzętowy.
+Service Control Manager;7031;Error;Menedżer sterowania usługami próbował podjąć akcję korekcyjną (Uruchom usługę ponownie) po nieoczekiwanym zakończeniu usługi Usługa kojarzenia urządzeń, ale ta akcja nie powiodła się.
+Security-SPP;903;Information;Usługa ochrony oprogramowania została zatrzymana.
+Kernel-Power;41;Critical;System został uruchomiony ponownie bez uprzedniego czystego zamknięcia. Możliwe przyczyny błędu: system przestał odpowiadać lub uległ awarii albo nastąpiła nieoczekiwana utrata zasilania.
+WindowsUpdateClient;22;Information;Wymagane ponowne uruchomienie w celu ukończenia instalowania następujących aktualizacji, komputer zostanie ponownie uruchomiony za 15min
+Service Control Manager;7040;Information;Typ uruchamiania usługi Usługa inteligentnego transferu w tle został zmieniony z uruchamianie na żądanie na autostart.
+Winlogon;7001;Information;Powiadomienie podczas logowania się użytkownika dla Programu poprawy jakości obsługi klienta
+Power-Troubleshooter;1;Information;System wrócił ze stanu niskiego poboru energii.
+Service Control Manager;7040;Information;Typ uruchamiania usługi Instalator modułów systemu Windows został zmieniony z uruchamianie na żądanie na autostart.
+Ntfs;98;Information;Wolumin ?? (\Device\HarddiskVolumeSHadowCopy4) jest w dorej kondycj. Nic nie trzeba robić.
+Kernel-Power;42;Information;System przechodzi do trybu uśpienia.
+Kernel-Boot;30;Information;Oprogramowanie układowe zgłosiło metryki rozruchu.
+Kernel-Boot;18;Information;W tym systemie istnieje następująca liczba opcji rozruchu: 0x1.
+Kernel-Boot;32;Information;Menedżer rozruchu oczekiwał 0 ms na wprowadzenie danych przez użytkownika.
+Kernel-Boot;25;Information;Zasada menu rozruchu: 0x1.
+Kernel-Boot;27;Information;Typ rozruchu: 0x1.
+Schannel;36887;Error;Odebrano alert krytyczny ze zdalnego punktu końcowego. Kod alertu krytycznego zdefiniowany przez protokół TLS to 80.
+VMnetDHCP;1;Warning;dispatch: Timeout waiting for input data
+Kernel-Processor-Power;37;Warning;Szybkość procesora 3 w grupie 0 jest ograniczona przez systemowe oprogramowanie układowe. Proceser miał ograniczony stan wydalności przez 202126 s od ostatniego raportu.
+WLAN-AutoConfig;10002;Warning;Moduł rozszerzalności sieci WLAN został zatrzymany.
+WLAN-AutoConfig;4001;Information;Usługa autokonfiguracji sieci WLAN została pomyślnie zatrzymana.
+Kernel-Power;109;Information;Menedżer zasilania jądra zainicjował przejście do zamykania.
+Kernel-General;13;Information;System operacyjny jest zamykany o czasie systemowym ‎2016‎-‎01‎-‎13T22:45:39.764821700Z.
+Kernel-Power;131;Information;Czasy S3 oprogramowania układowego. Liczba wznowień (ResumeCount): 1, pełne wznowienie (FullResume): 191, średnie wznowienie (AvarageResume): 191.
+Kernel-Boot;20;Information;Ostatni stan powodzenia zamknięcia: true. Ostatni stan powodzenia rozruchu: true.
+ErlSrv;17;Error;simpleapp_1: Erlang machine stopped instantly (distribution name conflict?). The service is not restarted as OnFail is set to ignore.
+Service Control Manager;7023;Error;Usługa simpleapp_1 zakończyła działanie, wystąpił następujący błąd: Proces zakończył się nieoczekiwanie.
+FilterManager;6;Information;Filtr systemu plików FileInfo (6,3, 2014-02-22T13:13:10.00000000Z) został pomyślnie załadoway i zarejestrował się w menadżerze filtrów.
+FilterManager;6;Information;Filtr systemu plików Avgmfx54 (6,3, 2014-02-22T13:13:10.00000000Z) został pomyślnie załadoway i zarejestrował się w menadżerze filtrów.
+FilterManager;6;Information;Filtr systemu plików Wof (6,3, 2014-02-22T13:13:10.00000000Z) został pomyślnie załadoway i zarejestrował się w menadżerze filtrów.
+Kernel-Processor-Power;37;Warning;Szybkość procesora 1 w grupie 0 jest ograniczana przez systemowe oprogramowanie układowe. Procesor miał ograniczony stan wydajności przez 262302 s od ostatniego raportu.
+
