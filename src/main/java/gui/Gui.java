@@ -16,21 +16,21 @@ public class Gui extends JFrame {
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gBC = new GridBagConstraints();
         gBC.fill = GridBagConstraints.HORIZONTAL;
-
+        gBC.anchor = GridBagConstraints.PAGE_START;
         gBC.weightx = 0.5;
         gBC.gridx = 0;
         gBC.gridy = 0;
+
         panel.add(table, gBC);
 
-
         JComboBox jcmbSample = new JComboBox(new String[]{"ComboBox 1","hi","hello"});
-        gBC.ipady = 10;
+        gBC.ipady = 2;
         gBC.weighty = 1.0;
-        gBC.anchor = GridBagConstraints.PAGE_END;
+        gBC.anchor = GridBagConstraints.PAGE_START;
         gBC.insets = new Insets(10,10,10,10);
         gBC.gridx = 1;
         gBC.gridwidth = 2;
-        gBC.gridy = 2;
+        gBC.gridy = 0;
         panel.add(jcmbSample, gBC);
 
         /*setLayout(new GridLayout());
