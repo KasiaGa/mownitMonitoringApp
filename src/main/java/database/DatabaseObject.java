@@ -2,11 +2,20 @@ package database;
 
 public class DatabaseObject {
 
+    private int id;
     private String timestamp;
     private String sourceName;
     private int sourceId;
     private String type;
     private String comment;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getTimestamp() {
         return timestamp;
