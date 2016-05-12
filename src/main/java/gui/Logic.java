@@ -3,7 +3,7 @@ package gui;
 import database.Connection;
 import database.DatabaseObject;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class Logic {
@@ -27,14 +27,24 @@ public class Logic {
             data[i][4] = databaseObjectList.get(i).getType();
             data[i][5] = databaseObjectList.get(i).getComment();
         }
-
-        for (int i = 0; i < numOfRecords; i++) {
-            for (int j = 0; j < NUM_OF_COLUMNS; j++) {
-                System.out.println(data[i][j]);
-            }
-        }
-
         return data;
     }
 
+    HashSet<String> getDistinctSources() {
+        List<DatabaseObject> databaseObjectList = connection.getData();
+        HashSet<String> sources = new HashSet<>();
+        for(DatabaseObject object : databaseObjectList) {
+            sources.add(object.getSourceName());
+        }
+        return sources;
+    }
+
+    HashSet<String> getDistinctTypes() {
+        List<DatabaseObject> databaseObjectList = connection.getData();
+        HashSet<String> types = new HashSet<>();
+        for(DatabaseObject object : databaseObjectList) {
+            types.add(object.getType());
+        }
+        return types;
+    }
 }
