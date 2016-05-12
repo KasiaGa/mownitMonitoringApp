@@ -2,15 +2,21 @@ package gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashSet;
 
-public class Gui extends JFrame {
+public class Gui extends JFrame implements ActionListener {
 
-    public Gui() {
+    private JPanel sourcePanel = new JPanel();
+    private JPanel typePanel = new JPanel();
+
+    public Gui(Object[][] data,HashSet<String> sources, HashSet<String> types) {
         super();
         setLayout(new GridLayout());
         JPanel panel = new JPanel();
         String[] columnNames = {"id", "source name", "source id", "type"};
-        Object[][] data = {{0, "Kernel-General", 4, "information"},{1, "Sth", 10, "warning"}};
         JTable table = new JTable(data, columnNames);
 
         panel.setLayout(new GridBagLayout());
@@ -23,7 +29,7 @@ public class Gui extends JFrame {
 
         panel.add(table, gBC);
 
-        JComboBox jcmbSample = new JComboBox(new String[]{"ComboBox 1","hi","hello"});
+        JComboBox jcmbSample = new JComboBox(new String[]{"Search filter","Source","Type","Date"});
         gBC.ipady = 2;
         gBC.weighty = 1.0;
         gBC.anchor = GridBagConstraints.PAGE_START;
@@ -31,21 +37,52 @@ public class Gui extends JFrame {
         gBC.gridx = 1;
         gBC.gridwidth = 2;
         gBC.gridy = 0;
+        jcmbSample.addActionListener(this);
         panel.add(jcmbSample, gBC);
 
-        /*setLayout(new GridLayout());
-        JPanel panel = new JPanel();
-        String[] columnNames = {"id", "source name", "source id", "type"};
-        Object[][] data = {{0, "Kernel-General", 4, "information"},{1, "Sth", 10, "warning"}};
-        JTable table = new JTable(data, columnNames);
-        JComboBox comboBox = new JComboBox();
-        panel.setLayout(new GridLayout(1,2));
-        panel.add(table);
-        panel.add(comboBox);
-        setContentPane(panel);*/
+
+        sourcePanel.setLayout(new GridBagLayout());
+        ArrayList<JCheckBox> sourceBox = new ArrayList<>();
+        sources.forEach(s->sourceBox.add(new JCheckBox(s,false)));
+        sourceBox.forEach(s->sourcePanel.add(s));
+        sourcePanel.setVisible(false);
+        panel.add(sourcePanel);
+
+        typePanel.setLayout(new GridBagLayout());
+        ArrayList<JCheckBox> typeBox = new ArrayList<>();
+        types.forEach(s->typeBox.add(new JCheckBox(s,false)));
+        typeBox.forEach(s->typePanel.add(s));
+        typePanel.setVisible(false);
+        panel.add(typePanel);
+
         setContentPane(panel);
         pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent actionEvent) {
+        JComboBox cb = (JComboBox) actionEvent.getSource();
+        String selectedItemName = (String)cb.getSelectedItem();
+        switch (selectedItemName){
+            case "Type":
+                sourcePanel.setVisible(false);
+                typePanel.setVisible(true);
+                break;
+            case "Date":
+                sourcePanel.setVisible(false);
+                typePanel.setVisible(false);
+                break;
+            case "Source":
+                sourcePanel.setVisible(true);
+                typePanel.setVisible(false);
+                break;
+            default:
+                sourcePanel.setVisible(false);
+                typePanel.setVisible(false);
+                break;
+        }
+
     }
 }
