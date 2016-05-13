@@ -1,7 +1,6 @@
 package gui;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.MaskFormatter;
@@ -11,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class Gui extends JFrame implements ActionListener {
@@ -26,8 +26,11 @@ public class Gui extends JFrame implements ActionListener {
         super();
         setLayout(new GridLayout());
         JPanel panel = new JPanel();
-        String[] columnNames = {"id", "timestamp", "source id", "source name", "type", "comment"};
-        JTable table = new JTable(data, columnNames);
+        CustomTableModel model = new CustomTableModel(data);
+        JTable table = new JTable(model);
+        table.setAutoCreateRowSorter(true);
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
+        table.setRowSorter(sorter);
 
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gBC = new GridBagConstraints();
@@ -119,12 +122,32 @@ public class Gui extends JFrame implements ActionListener {
                 toSearchSource.forEach(s-> System.out.println(s));
                 toSearchType.forEach(s-> System.out.println(s));
 
-                TableRowSorter<TableModel> sorter = new TableRowSorter<>(new DefaultTableModel());
-                table.setRowSorter(sorter);
-                sorter.setRowFilter(RowFilter.regexFilter("1"));
-                /*for(String s : toSearchSource) {
-                    sorter.setRowFilter(RowFilter.regexFilter(s, 3));
-                }*/
+                ArrayList<RowFilter<TableModel, Integer>> sourceFilters = new ArrayList<>();
+                ArrayList<RowFilter<TableModel, Integer>> typeFilters = new ArrayList<>();
+
+                for(String s : toSearchSource) {
+                    sourceFilters.add(RowFilter.regexFilter(s, 3));
+                }
+
+                for(String s : toSearchType) {
+                    typeFilters.add(RowFilter.regexFilter(s, 4));
+                }
+
+                if(toSearchSource.isEmpty() && toSearchType.isEmpty()) {
+                    sorter.setRowFilter(null);
+                }
+                else if(toSearchSource.isEmpty()) {
+                    sorter.setRowFilter(RowFilter.orFilter(typeFilters));
+                }
+                else if(toSearchType.isEmpty()) {
+                    sorter.setRowFilter(RowFilter.orFilter(sourceFilters));
+                }
+                else {
+                    sorter.setRowFilter(RowFilter.andFilter(Arrays.asList(RowFilter.orFilter(typeFilters), RowFilter.orFilter(sourceFilters))));
+                }
+
+                toSearchSource.clear();
+                toSearchType.clear();
             }
         });
         settingsGBC.gridx = 1;
