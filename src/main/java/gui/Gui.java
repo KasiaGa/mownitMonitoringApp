@@ -9,8 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 
 public class Gui extends JFrame implements ActionListener {
@@ -21,9 +23,12 @@ public class Gui extends JFrame implements ActionListener {
     private JPanel datePanel = new JPanel();
     private ArrayList<JCheckBox> sourceBox = new ArrayList<>();
     private ArrayList<JCheckBox> typeBox = new ArrayList<>();
+    private JFormattedTextField sinceDate;
+    private JFormattedTextField toDate;
 
     public Gui(Object[][] data,HashSet<String> sources, HashSet<String> types) {
         super();
+        setPreferredSize(new Dimension(1000, 600));
         setLayout(new GridLayout());
         JPanel panel = new JPanel();
         CustomTableModel model = new CustomTableModel(data);
@@ -90,12 +95,13 @@ public class Gui extends JFrame implements ActionListener {
 
         datePanel.setLayout(new GridBagLayout());
         int dateformat = DateFormat.DEFAULT;
+
         try {
             MaskFormatter formatter = new MaskFormatter("####-##-##");
-            JFormattedTextField sinceDate = new JFormattedTextField(formatter);
+            sinceDate = new JFormattedTextField(formatter);
             sinceDate.setColumns(10);
             datePanel.add(sinceDate);
-            JFormattedTextField toDate = new JFormattedTextField(formatter);
+            toDate = new JFormattedTextField(formatter);
             toDate.setColumns(10);
             datePanel.add(toDate);
         } catch (ParseException e) {
@@ -103,12 +109,16 @@ public class Gui extends JFrame implements ActionListener {
         }
         settingsPanel.add(datePanel, sourceGBC);
 
+        datePanel.setVisible(false);
+
         JButton button = new JButton("Search");
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 ArrayList <String> toSearchSource = new ArrayList<String>();
                 ArrayList <String> toSearchType = new ArrayList<String>();
+                String sinceDate1 = sinceDate.getText();
+                String toDate1 = toDate.getText();
                 for(JCheckBox s:sourceBox) {
                     if (s.isSelected()) {
                         toSearchSource.add(s.getLabel());
@@ -121,6 +131,20 @@ public class Gui extends JFrame implements ActionListener {
                 }
                 toSearchSource.forEach(s-> System.out.println(s));
                 toSearchType.forEach(s-> System.out.println(s));
+                //System.out.println(sinceDate1);
+                //System.out.println(toDate1);
+
+                Date sinceDateD = null;
+                Date toDateD = null;
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    if(!sinceDate1.equals("    -  -  ")) sinceDateD = df.parse(sinceDate1);
+                    if(!toDate1.equals("    -  -  ")) toDateD = df.parse(toDate1);
+                    System.out.println(sinceDateD);
+                    System.out.println(toDateD);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
                 ArrayList<RowFilter<TableModel, Integer>> sourceFilters = new ArrayList<>();
                 ArrayList<RowFilter<TableModel, Integer>> typeFilters = new ArrayList<>();
@@ -133,7 +157,11 @@ public class Gui extends JFrame implements ActionListener {
                     typeFilters.add(RowFilter.regexFilter(s, 4));
                 }
 
-                if(toSearchSource.isEmpty() && toSearchType.isEmpty()) {
+                /*if(sinceDateD == null && toDateD == null) {
+
+                }*/
+
+                /*if(toSearchSource.isEmpty() && toSearchType.isEmpty() && sinceDateD == null && toDateD == null) {
                     sorter.setRowFilter(null);
                 }
                 else if(toSearchSource.isEmpty()) {
@@ -144,6 +172,47 @@ public class Gui extends JFrame implements ActionListener {
                 }
                 else {
                     sorter.setRowFilter(RowFilter.andFilter(Arrays.asList(RowFilter.orFilter(typeFilters), RowFilter.orFilter(sourceFilters))));
+                }*/
+                int counter =0;
+                if(!(sinceDateD == null || toDateD == null)){
+                    counter += 1;
+                }
+                if(!toSearchSource.isEmpty()) {
+                    counter+=2;
+                }
+                if(!toSearchType.isEmpty()) {
+                    counter += 4;
+                }
+
+                switch(counter){
+                    case 1:
+                        sorter.setRowFilter(RowFilter.andFilter(Arrays.asList(RowFilter.dateFilter(RowFilter.ComparisonType.AFTER, sinceDateD),
+                                RowFilter.dateFilter(RowFilter.ComparisonType.BEFORE, toDateD))));
+                        break;
+                    case 2:
+                        sorter.setRowFilter(RowFilter.orFilter(sourceFilters));
+                        break;
+                    case 3:
+                        sorter.setRowFilter(RowFilter.andFilter(Arrays.asList(RowFilter.andFilter(Arrays.asList(RowFilter.dateFilter(RowFilter.ComparisonType.AFTER, sinceDateD),
+                                RowFilter.dateFilter(RowFilter.ComparisonType.BEFORE, toDateD))), RowFilter.orFilter(sourceFilters))));
+                        break;
+                    case 4:
+                        sorter.setRowFilter(RowFilter.orFilter(typeFilters));
+                        break;
+                    case 5:
+                        sorter.setRowFilter(RowFilter.andFilter(Arrays.asList(RowFilter.andFilter(Arrays.asList(RowFilter.dateFilter(RowFilter.ComparisonType.AFTER, sinceDateD),
+                                RowFilter.dateFilter(RowFilter.ComparisonType.BEFORE, toDateD))), RowFilter.orFilter(typeFilters))));
+                        break;
+                    case 6:
+                        sorter.setRowFilter(RowFilter.andFilter(Arrays.asList(RowFilter.orFilter(typeFilters), RowFilter.orFilter(sourceFilters))));
+                        break;
+                    case 7:
+                        sorter.setRowFilter(RowFilter.andFilter(Arrays.asList(RowFilter.andFilter(Arrays.asList(RowFilter.dateFilter(RowFilter.ComparisonType.AFTER, sinceDateD),
+                                RowFilter.dateFilter(RowFilter.ComparisonType.BEFORE, toDateD))), RowFilter.orFilter(typeFilters), RowFilter.orFilter(sourceFilters))));
+                        break;
+                    default:
+                        sorter.setRowFilter(null);
+                        break;
                 }
 
                 toSearchSource.clear();
@@ -178,18 +247,22 @@ public class Gui extends JFrame implements ActionListener {
             case "Type":
                 sourcePanel.setVisible(false);
                 typePanel.setVisible(true);
+                datePanel.setVisible(false);
                 break;
             case "Date":
                 sourcePanel.setVisible(false);
                 typePanel.setVisible(false);
+                datePanel.setVisible(true);
                 break;
             case "Source":
                 sourcePanel.setVisible(true);
                 typePanel.setVisible(false);
+                datePanel.setVisible(false);
                 break;
             default:
                 sourcePanel.setVisible(false);
                 typePanel.setVisible(false);
+                datePanel.setVisible(false);
                 break;
         }
 
