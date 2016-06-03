@@ -16,7 +16,7 @@ public class LogicTest {
             e.printStackTrace();
         }
 
-        HashSet<String> sources = logic.getDistinctSources();
+        HashSet<String> sources = logic.getDistinctNames();
         sources.forEach(e -> System.out.println(e));
     }
 }

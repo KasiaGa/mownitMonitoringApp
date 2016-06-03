@@ -41,8 +41,8 @@ public class Connection {
         return 0;
     }
 
-    public List<DatabaseObject> getData() {
-        List<DatabaseObject> data = new ArrayList<>();
+    public List<DBObject> getData() {
+        List<DBObject> data = new ArrayList<>();
         MongoClient mongoClient = null;
         try {
             mongoClient = new MongoClient();
@@ -53,13 +53,13 @@ public class Connection {
         DBCursor cursor = database.getCollection("monitoring_data").find();
         while (cursor.hasNext()) {
             BasicDBObject obj = (BasicDBObject) cursor.next();
-            DatabaseObject object = new DatabaseObject();
-            object.setId(obj.getInt("_id"));
+            DBObject object = new DBObject();
+            object.setId(obj.getString("_id"));
             object.setTimestamp(obj.getString("timestamp"));
-            object.setSourceId(obj.getInt("source_id"));
-            object.setSourceName(obj.getString("source_name"));
+            object.setMonitoringCase(obj.getString("monitoring_case"));
+            object.setAgentAddress(obj.getString("agent_address"));
+            object.setName(obj.getString("name"));
             object.setType(obj.getString("type"));
-            object.setComment(obj.getString("comment"));
             data.add(object);
         }
         return data;

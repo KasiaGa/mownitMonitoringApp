@@ -48,7 +48,7 @@ public class Gui extends JFrame implements ActionListener {
 
         panel.add(table, gBC);
 
-        JComboBox jcmbSample = new JComboBox(new String[]{"Search filter","Source","Type","Date"});
+        JComboBox jcmbSample = new JComboBox(new String[]{"Search filter","Agent Address","Date","Monitoring Case","Name"});
         jcmbSample.addActionListener(this);
 
         settingsPanel.setLayout(new GridBagLayout());
@@ -244,7 +244,7 @@ public class Gui extends JFrame implements ActionListener {
         JComboBox cb = (JComboBox) actionEvent.getSource();
         String selectedItemName = (String)cb.getSelectedItem();
         switch (selectedItemName){
-            case "Type":
+            case "Agent Address":
                 sourcePanel.setVisible(false);
                 typePanel.setVisible(true);
                 datePanel.setVisible(false);
@@ -254,8 +254,13 @@ public class Gui extends JFrame implements ActionListener {
                 typePanel.setVisible(false);
                 datePanel.setVisible(true);
                 break;
-            case "Source":
+            case "Monitoring Address":
                 sourcePanel.setVisible(true);
+                typePanel.setVisible(false);
+                datePanel.setVisible(false);
+                break;
+            case "Name":
+                sourcePanel.setVisible(false);
                 typePanel.setVisible(false);
                 datePanel.setVisible(false);
                 break;
@@ -265,6 +270,5 @@ public class Gui extends JFrame implements ActionListener {
                 datePanel.setVisible(false);
                 break;
         }
-
     }
 }

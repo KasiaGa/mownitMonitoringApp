@@ -1,6 +1,7 @@
 package gui;
 
 import database.Connection;
+import database.DBObject;
 import database.DatabaseObject;
 
 import java.text.DateFormat;
@@ -8,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Logic {
 
@@ -21,34 +23,30 @@ public class Logic {
     Object[][] getTableData() throws ParseException {
         int numOfRecords = connection.count();
         Object[][] data = new Object[numOfRecords][NUM_OF_COLUMNS];
-        List<DatabaseObject> databaseObjectList = connection.getData();
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        List<DBObject> databaseObjectList = connection.getData();
         for (int i = 0; i < numOfRecords; i++) {
             data[i][0] = databaseObjectList.get(i).getId();
-            data[i][1] = df.parse(databaseObjectList.get(i).getTimestamp());
-            data[i][2] = databaseObjectList.get(i).getSourceId();
-            data[i][3] = databaseObjectList.get(i).getSourceName();
-            data[i][4] = databaseObjectList.get(i).getType();
-            data[i][5] = databaseObjectList.get(i).getComment();
+            data[i][1] = databaseObjectList.get(i).getResult();
+            data[i][2] = databaseObjectList.get(i).getTimestamp();
+            data[i][3] = databaseObjectList.get(i).getMonitoringCase();
+            data[i][4] = databaseObjectList.get(i).getAgentAddress();
+            data[i][5] = databaseObjectList.get(i).getName();
         }
         return data;
     }
 
-    HashSet<String> getDistinctSources() {
-        List<DatabaseObject> databaseObjectList = connection.getData();
-        HashSet<String> sources = new HashSet<>();
-        for(DatabaseObject object : databaseObjectList) {
-            sources.add(object.getSourceName());
-        }
-        return sources;
+    HashSet<String> getDistinctMonitoringCase() {
+        List<DBObject> databaseObjectList = connection.getData();
+        return databaseObjectList.stream().map(DBObject::getMonitoringCase).collect(Collectors.toCollection(HashSet::new));
     }
 
-    HashSet<String> getDistinctTypes() {
-        List<DatabaseObject> databaseObjectList = connection.getData();
-        HashSet<String> types = new HashSet<>();
-        for(DatabaseObject object : databaseObjectList) {
-            types.add(object.getType());
-        }
-        return types;
+    HashSet<String> getDistinctNames() {
+        List<DBObject> databaseObjectList = connection.getData();
+        return databaseObjectList.stream().map(DBObject::getName).collect(Collectors.toCollection(HashSet::new));
+    }
+
+    HashSet<String> getDistinctAgentAddress() {
+        List<DBObject> databaseObjectList = connection.getData();
+        return databaseObjectList.stream().map(DBObject::getAgentAddress).collect(Collectors.toCollection(HashSet::new));
     }
 }
