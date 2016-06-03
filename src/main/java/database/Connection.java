@@ -20,11 +20,11 @@ public class Connection {
         return null;
     }
 
-    public void insertData(DatabaseObject object, int id) {
+    public void insertData(DBObject object) {
         DBCollection collection = connectToDatabase();
-        DBObject data = new BasicDBObject("_id", id).append("timestamp", object.getTimestamp())
-                .append("source_id", object.getSourceId()).append("source_name", object.getSourceName())
-                .append("type", object.getType()).append("comment", object.getComment());
+        com.mongodb.DBObject data = new BasicDBObject("_id", object.getId()).append("result", object.getResult()).append("timestamp", object.getTimestamp())
+                .append("monitoring_case", object.getMonitoringCase()).append("agent_address", object.getAgentAddress())
+                .append("name", object.getName()).append("type", object.getType());
         assert collection != null;
         collection.insert(data);
     }
