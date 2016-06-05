@@ -59,7 +59,7 @@ public class Connection {
             object.setMonitoringCase(obj.getString("monitoring_case"));
             object.setAgentAddress(obj.getString("agent_address"));
             object.setName(obj.getString("name"));
-            object.setType(obj.getString("type"));
+            object.setResult(obj.getString("result"));
             data.add(object);
         }
         return data;

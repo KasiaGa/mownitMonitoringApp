@@ -5,7 +5,7 @@ import javax.swing.table.AbstractTableModel;
 public class CustomTableModel extends AbstractTableModel {
 
     private Object[][] data;
-    private String[] columnNames = {"id", "timestamp", "source id", "source name", "type", "comment"};
+    private String[] columnNames = {"id", "result", "timestamp", "monitoring_case", "agent_address", "name"};
 
     public CustomTableModel(Object[][] data) {
         this.data = data;

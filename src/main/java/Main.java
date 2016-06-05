@@ -26,5 +26,7 @@ public class Main {
             connection.insertData(dbObject);
         }
 
+        //generatorFromHSQL.test();
+
     }
 }

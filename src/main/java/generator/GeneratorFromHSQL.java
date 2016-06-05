@@ -110,7 +110,7 @@ public class GeneratorFromHSQL {
     public void test() {
         readFile();
         for (ResultObject result : resultObjects) {
-            System.out.println(result.toString());
+            System.out.println(result.getResult());
         }
     }
 

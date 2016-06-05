@@ -18,15 +18,17 @@ import java.util.HashSet;
 public class Gui extends JFrame implements ActionListener {
 
     private JPanel settingsPanel = new JPanel();
-    private JPanel sourcePanel = new JPanel();
-    private JPanel typePanel = new JPanel();
+    private JPanel namePanel = new JPanel();
+    private JPanel monitorPanel = new JPanel();
     private JPanel datePanel = new JPanel();
-    private ArrayList<JCheckBox> sourceBox = new ArrayList<>();
-    private ArrayList<JCheckBox> typeBox = new ArrayList<>();
+    private JPanel addressPanel = new JPanel();
+    private ArrayList<JCheckBox> nameBox = new ArrayList<>();
+    private ArrayList<JCheckBox> monitorBox = new ArrayList<>();
+    private ArrayList<JCheckBox> addressBox = new ArrayList<>();
     private JFormattedTextField sinceDate;
     private JFormattedTextField toDate;
 
-    public Gui(Object[][] data,HashSet<String> sources, HashSet<String> types) {
+    public Gui(Object[][] data,HashSet<String> names, HashSet<String> monitors, HashSet<String> addresses) {
         super();
         setPreferredSize(new Dimension(1000, 600));
         setLayout(new GridLayout());
@@ -58,40 +60,58 @@ public class Gui extends JFrame implements ActionListener {
         settingsGBC.ipady = 1;
         settingsPanel.add(jcmbSample, settingsGBC);
 
-        sourcePanel.setLayout(new GridBagLayout());
-        sources.forEach(s->sourceBox.add(new JCheckBox(s,false)));
+        addressPanel.setLayout(new GridBagLayout());
+        addresses.forEach(s->addressBox.add(new JCheckBox(s,false)));
 
-        GridBagConstraints sourceGBC = new GridBagConstraints();
-        sourceGBC.anchor = GridBagConstraints.PAGE_START;
-        sourceGBC.gridx = 0;
-        sourceGBC.gridwidth = 2;
-        sourceGBC.ipady = 1;
+        GridBagConstraints addressGBC = new GridBagConstraints();
+        addressGBC.anchor = GridBagConstraints.PAGE_START;
+        addressGBC.gridx = 0;
+        addressGBC.gridwidth = 2;
+        addressGBC.ipady = 1;
         int y = 1;
-        for(JCheckBox box : sourceBox) {
-            sourceGBC.gridy = y;
-            sourcePanel.add(box, sourceGBC);
+        for(JCheckBox box : addressBox) {
+            addressGBC.gridy = y;
+            addressPanel.add(box, addressGBC);
             y++;
         }
 
         settingsGBC.gridy = 1;
         settingsGBC.gridwidth = 2;
         settingsGBC.ipady = 1;
-        sourcePanel.setVisible(false);
-        settingsPanel.add(sourcePanel, settingsGBC);
+        addressPanel.setVisible(false);
+        settingsPanel.add(addressPanel, settingsGBC);
 
-        typePanel.setLayout(new GridBagLayout());
-        types.forEach(s->typeBox.add(new JCheckBox(s,false)));
-        typeBox.forEach(s->typePanel.add(s));
+        namePanel.setLayout(new GridBagLayout());
+        names.forEach(s-> nameBox.add(new JCheckBox(s,false)));
 
+        GridBagConstraints sourceGBC = new GridBagConstraints();
+        sourceGBC.anchor = GridBagConstraints.PAGE_START;
+        sourceGBC.gridx = 0;
+        sourceGBC.gridwidth = 2;
+        sourceGBC.ipady = 1;
         y = 1;
-        for(JCheckBox box : typeBox) {
+        for(JCheckBox box : nameBox) {
             sourceGBC.gridy = y;
-            typePanel.add(box, sourceGBC);
+            namePanel.add(box, sourceGBC);
             y++;
         }
 
-        typePanel.setVisible(false);
-        settingsPanel.add(typePanel, settingsGBC);
+        namePanel.setVisible(false);
+        settingsPanel.add(namePanel, settingsGBC);
+
+        monitorPanel.setLayout(new GridBagLayout());
+        monitors.forEach(s-> monitorBox.add(new JCheckBox(s,false)));
+        monitorBox.forEach(s-> monitorPanel.add(s));
+
+        y = 1;
+        for(JCheckBox box : monitorBox) {
+            sourceGBC.gridy = y;
+            monitorPanel.add(box, sourceGBC);
+            y++;
+        }
+
+        monitorPanel.setVisible(false);
+        settingsPanel.add(monitorPanel, settingsGBC);
 
         datePanel.setLayout(new GridBagLayout());
         int dateformat = DateFormat.DEFAULT;
@@ -115,22 +135,28 @@ public class Gui extends JFrame implements ActionListener {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                ArrayList <String> toSearchSource = new ArrayList<String>();
-                ArrayList <String> toSearchType = new ArrayList<String>();
+                ArrayList <String> toSearchName = new ArrayList<String>();
+                ArrayList <String> toSearchMonitor = new ArrayList<String>();
+                ArrayList <String> toSearchAddresses = new ArrayList<String>();
                 String sinceDate1 = sinceDate.getText();
                 String toDate1 = toDate.getText();
-                for(JCheckBox s:sourceBox) {
+                for(JCheckBox s: nameBox) {
                     if (s.isSelected()) {
-                        toSearchSource.add(s.getLabel());
+                        toSearchName.add(s.getLabel());
                     }
                 }
-                for(JCheckBox s:typeBox) {
+                for(JCheckBox s: monitorBox) {
                     if (s.isSelected()) {
-                        toSearchType.add(s.getLabel());
+                        toSearchMonitor.add(s.getLabel());
                     }
                 }
-                toSearchSource.forEach(s-> System.out.println(s));
-                toSearchType.forEach(s-> System.out.println(s));
+                for(JCheckBox s:addressBox) {
+                    if (s.isSelected()) {
+                        toSearchAddresses.add(s.getLabel());
+                    }
+                }
+                toSearchName.forEach(s-> System.out.println(s));
+                toSearchMonitor.forEach(s-> System.out.println(s));
                 //System.out.println(sinceDate1);
                 //System.out.println(toDate1);
 
@@ -146,77 +172,97 @@ public class Gui extends JFrame implements ActionListener {
                     e.printStackTrace();
                 }
 
-                ArrayList<RowFilter<TableModel, Integer>> sourceFilters = new ArrayList<>();
-                ArrayList<RowFilter<TableModel, Integer>> typeFilters = new ArrayList<>();
+                ArrayList<RowFilter<TableModel, Integer>> nameFilters = new ArrayList<>();
+                ArrayList<RowFilter<TableModel, Integer>> monitorFilters = new ArrayList<>();
+                ArrayList<RowFilter<TableModel, Integer>> addressFilters = new ArrayList<>();
 
-                for(String s : toSearchSource) {
-                    sourceFilters.add(RowFilter.regexFilter(s, 3));
+                for(String s : toSearchName) {
+                    nameFilters.add(RowFilter.regexFilter(s, 5));
                 }
 
-                for(String s : toSearchType) {
-                    typeFilters.add(RowFilter.regexFilter(s, 4));
+                for(String s : toSearchMonitor) {
+                    monitorFilters.add(RowFilter.regexFilter(s, 3));
                 }
 
-                /*if(sinceDateD == null && toDateD == null) {
+                for(String s : toSearchAddresses) {
+                    addressFilters.add(RowFilter.regexFilter(s, 4));
+                }
 
-                }*/
-
-                /*if(toSearchSource.isEmpty() && toSearchType.isEmpty() && sinceDateD == null && toDateD == null) {
-                    sorter.setRowFilter(null);
-                }
-                else if(toSearchSource.isEmpty()) {
-                    sorter.setRowFilter(RowFilter.orFilter(typeFilters));
-                }
-                else if(toSearchType.isEmpty()) {
-                    sorter.setRowFilter(RowFilter.orFilter(sourceFilters));
-                }
-                else {
-                    sorter.setRowFilter(RowFilter.andFilter(Arrays.asList(RowFilter.orFilter(typeFilters), RowFilter.orFilter(sourceFilters))));
-                }*/
                 int counter =0;
                 if(!(sinceDateD == null || toDateD == null)){
                     counter += 1;
                 }
-                if(!toSearchSource.isEmpty()) {
+                if(!toSearchName.isEmpty()) {
                     counter+=2;
                 }
-                if(!toSearchType.isEmpty()) {
+                if(!toSearchMonitor.isEmpty()) {
                     counter += 4;
+                }
+                if(!toSearchAddresses.isEmpty()) {
+                    counter += 8;
                 }
 
                 switch(counter){
                     case 1:
-                        sorter.setRowFilter(RowFilter.andFilter(Arrays.asList(RowFilter.dateFilter(RowFilter.ComparisonType.AFTER, sinceDateD),
-                                RowFilter.dateFilter(RowFilter.ComparisonType.BEFORE, toDateD))));
+                        sorter.setRowFilter(RowFilter.andFilter(Arrays.asList(RowFilter.dateFilter(RowFilter.ComparisonType.AFTER, sinceDateD, 2),
+                                RowFilter.dateFilter(RowFilter.ComparisonType.BEFORE, toDateD, 2))));
                         break;
                     case 2:
-                        sorter.setRowFilter(RowFilter.orFilter(sourceFilters));
+                        sorter.setRowFilter(RowFilter.orFilter(nameFilters));
                         break;
                     case 3:
                         sorter.setRowFilter(RowFilter.andFilter(Arrays.asList(RowFilter.andFilter(Arrays.asList(RowFilter.dateFilter(RowFilter.ComparisonType.AFTER, sinceDateD),
-                                RowFilter.dateFilter(RowFilter.ComparisonType.BEFORE, toDateD))), RowFilter.orFilter(sourceFilters))));
+                                RowFilter.dateFilter(RowFilter.ComparisonType.BEFORE, toDateD))), RowFilter.orFilter(nameFilters))));
                         break;
                     case 4:
-                        sorter.setRowFilter(RowFilter.orFilter(typeFilters));
+                        sorter.setRowFilter(RowFilter.orFilter(monitorFilters));
                         break;
                     case 5:
                         sorter.setRowFilter(RowFilter.andFilter(Arrays.asList(RowFilter.andFilter(Arrays.asList(RowFilter.dateFilter(RowFilter.ComparisonType.AFTER, sinceDateD),
-                                RowFilter.dateFilter(RowFilter.ComparisonType.BEFORE, toDateD))), RowFilter.orFilter(typeFilters))));
+                                RowFilter.dateFilter(RowFilter.ComparisonType.BEFORE, toDateD))), RowFilter.orFilter(monitorFilters))));
                         break;
                     case 6:
-                        sorter.setRowFilter(RowFilter.andFilter(Arrays.asList(RowFilter.orFilter(typeFilters), RowFilter.orFilter(sourceFilters))));
+                        sorter.setRowFilter(RowFilter.andFilter(Arrays.asList(RowFilter.orFilter(monitorFilters), RowFilter.orFilter(nameFilters))));
                         break;
                     case 7:
                         sorter.setRowFilter(RowFilter.andFilter(Arrays.asList(RowFilter.andFilter(Arrays.asList(RowFilter.dateFilter(RowFilter.ComparisonType.AFTER, sinceDateD),
-                                RowFilter.dateFilter(RowFilter.ComparisonType.BEFORE, toDateD))), RowFilter.orFilter(typeFilters), RowFilter.orFilter(sourceFilters))));
+                                RowFilter.dateFilter(RowFilter.ComparisonType.BEFORE, toDateD))), RowFilter.orFilter(monitorFilters), RowFilter.orFilter(nameFilters))));
+                        break;
+                    case 8:
+                        sorter.setRowFilter(RowFilter.orFilter(addressFilters));
+                        break;
+                    case 9:
+                        sorter.setRowFilter(RowFilter.andFilter(Arrays.asList(RowFilter.andFilter(Arrays.asList(RowFilter.dateFilter(RowFilter.ComparisonType.AFTER, sinceDateD),
+                                RowFilter.dateFilter(RowFilter.ComparisonType.BEFORE, toDateD))), RowFilter.orFilter(addressFilters))));
+                        break;
+                    case 10:
+                        sorter.setRowFilter(RowFilter.andFilter(Arrays.asList(RowFilter.orFilter(nameFilters), RowFilter.orFilter(addressFilters))));
+                        break;
+                    case 11:
+                        sorter.setRowFilter(RowFilter.andFilter(Arrays.asList(RowFilter.andFilter(Arrays.asList(RowFilter.dateFilter(RowFilter.ComparisonType.AFTER, sinceDateD),
+                                RowFilter.dateFilter(RowFilter.ComparisonType.BEFORE, toDateD))), RowFilter.orFilter(addressFilters), RowFilter.orFilter(nameFilters))));
+                        break;
+                    case 12:
+                        sorter.setRowFilter(RowFilter.andFilter(Arrays.asList(RowFilter.orFilter(monitorFilters), RowFilter.orFilter(addressFilters))));
+                        break;
+                    case 13:
+                        sorter.setRowFilter(RowFilter.andFilter(Arrays.asList(RowFilter.andFilter(Arrays.asList(RowFilter.dateFilter(RowFilter.ComparisonType.AFTER, sinceDateD),
+                                RowFilter.dateFilter(RowFilter.ComparisonType.BEFORE, toDateD))), RowFilter.orFilter(monitorFilters), RowFilter.orFilter(addressFilters))));
+                        break;
+                    case 14:
+                        sorter.setRowFilter(RowFilter.andFilter(Arrays.asList(RowFilter.orFilter(monitorFilters), RowFilter.orFilter(addressFilters), RowFilter.orFilter(nameFilters))));
+                        break;
+                    case 15:
+                        sorter.setRowFilter(RowFilter.andFilter(Arrays.asList(RowFilter.andFilter(Arrays.asList(RowFilter.dateFilter(RowFilter.ComparisonType.AFTER, sinceDateD),
+                                RowFilter.dateFilter(RowFilter.ComparisonType.BEFORE, toDateD))), RowFilter.orFilter(addressFilters), RowFilter.orFilter(nameFilters), RowFilter.orFilter(monitorFilters))));
                         break;
                     default:
                         sorter.setRowFilter(null);
                         break;
                 }
 
-                toSearchSource.clear();
-                toSearchType.clear();
+                toSearchName.clear();
+                toSearchMonitor.clear();
             }
         });
         settingsGBC.gridx = 1;
@@ -245,28 +291,33 @@ public class Gui extends JFrame implements ActionListener {
         String selectedItemName = (String)cb.getSelectedItem();
         switch (selectedItemName){
             case "Agent Address":
-                sourcePanel.setVisible(false);
-                typePanel.setVisible(true);
+                addressPanel.setVisible(true);
+                namePanel.setVisible(false);
+                monitorPanel.setVisible(false);
                 datePanel.setVisible(false);
                 break;
             case "Date":
-                sourcePanel.setVisible(false);
-                typePanel.setVisible(false);
+                addressPanel.setVisible(false);
+                namePanel.setVisible(false);
+                monitorPanel.setVisible(false);
                 datePanel.setVisible(true);
                 break;
-            case "Monitoring Address":
-                sourcePanel.setVisible(true);
-                typePanel.setVisible(false);
+            case "Monitoring Case":
+                addressPanel.setVisible(false);
+                namePanel.setVisible(false);
+                monitorPanel.setVisible(true);
                 datePanel.setVisible(false);
                 break;
             case "Name":
-                sourcePanel.setVisible(false);
-                typePanel.setVisible(false);
+                addressPanel.setVisible(false);
+                namePanel.setVisible(true);
+                monitorPanel.setVisible(false);
                 datePanel.setVisible(false);
                 break;
             default:
-                sourcePanel.setVisible(false);
-                typePanel.setVisible(false);
+                addressPanel.setVisible(false);
+                namePanel.setVisible(false);
+                monitorPanel.setVisible(false);
                 datePanel.setVisible(false);
                 break;
         }

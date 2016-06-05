@@ -7,6 +7,7 @@ import database.DatabaseObject;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,7 +28,7 @@ public class Logic {
         for (int i = 0; i < numOfRecords; i++) {
             data[i][0] = databaseObjectList.get(i).getId();
             data[i][1] = databaseObjectList.get(i).getResult();
-            data[i][2] = databaseObjectList.get(i).getTimestamp();
+            data[i][2] = new Date(Long.parseLong(databaseObjectList.get(i).getTimestamp()));
             data[i][3] = databaseObjectList.get(i).getMonitoringCase();
             data[i][4] = databaseObjectList.get(i).getAgentAddress();
             data[i][5] = databaseObjectList.get(i).getName();
