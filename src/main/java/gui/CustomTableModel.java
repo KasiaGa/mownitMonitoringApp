@@ -25,4 +25,9 @@ public class CustomTableModel extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         return data[rowIndex][columnIndex];
     }
+
+    @Override
+    public String getColumnName(int index) {
+        return columnNames[index];
+    }
 }

@@ -1,6 +1,7 @@
 package gui;
 
 import javax.swing.*;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.MaskFormatter;
@@ -17,6 +18,7 @@ import java.util.HashSet;
 
 public class Gui extends JFrame implements ActionListener {
 
+    JPanel panel1 = new JPanel();
     private JPanel settingsPanel = new JPanel();
     private JPanel namePanel = new JPanel();
     private JPanel monitorPanel = new JPanel();
@@ -48,7 +50,7 @@ public class Gui extends JFrame implements ActionListener {
         gBC.gridx = 0;
         gBC.gridy = 0;
 
-        panel.add(table, gBC);
+        panel.add(new JScrollPane(table), gBC);
 
         JComboBox jcmbSample = new JComboBox(new String[]{"Search filter","Agent Address","Date","Monitoring Case","Name"});
         jcmbSample.addActionListener(this);
@@ -279,7 +281,15 @@ public class Gui extends JFrame implements ActionListener {
         gBC.gridy = 0;
         panel.add(settingsPanel,gBC);
 
-        setContentPane(panel);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+
+        JScrollPane scrollPane = new JScrollPane(panel);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setPreferredSize(new Dimension(950, 550));
+        panel1.add(scrollPane);
+
+        setContentPane(panel1);
         pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
