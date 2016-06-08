@@ -1,11 +1,11 @@
 package database;
 
 public class ResultObject {
-    String id;
-    String result;
-    String timestamp;
-    String monitoringID;
-    String capabilitiesID;
+    private String id;
+    private String result;
+    private String timestamp;
+    private String monitoringID;
+    private String capabilitiesID;
 
     public String getId() {
         return id;

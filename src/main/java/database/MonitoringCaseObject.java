@@ -1,9 +1,9 @@
 package database;
 
 public class MonitoringCaseObject {
-    String id;
-    String monitoringCase;
-    String agentAddress;
+    private String id;
+    private String monitoringCase;
+    private String agentAddress;
 
     public void setId(String id) {
         this.id = id;

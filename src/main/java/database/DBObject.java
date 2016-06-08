@@ -2,13 +2,13 @@ package database;
 
 public class DBObject {
 
-    String id;
-    String result;
-    String timestamp;
-    String monitoringCase;
-    String agentAddress;
-    String name;
-    String type;
+    private String id;
+    private String result;
+    private String timestamp;
+    private String monitoringCase;
+    private String agentAddress;
+    private String name;
+    private String type;
 
     public String getId() {
         return id;

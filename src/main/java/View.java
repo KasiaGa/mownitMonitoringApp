@@ -1,8 +1,9 @@
-package gui;
+import gui.Gui;
+import gui.Logic;
 
 import java.text.ParseException;
 
-public class GuiTest {
+public class View {
 
     public static void main(String[] args) {
         Logic logic = new Logic();

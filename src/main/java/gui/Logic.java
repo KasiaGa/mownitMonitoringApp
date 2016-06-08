@@ -2,11 +2,7 @@ package gui;
 
 import database.Connection;
 import database.DBObject;
-import database.DatabaseObject;
-
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -21,7 +17,7 @@ public class Logic {
         connection = new Connection();
     }
 
-    Object[][] getTableData() throws ParseException {
+    public Object[][] getTableData() throws ParseException {
         int numOfRecords = connection.count();
         Object[][] data = new Object[numOfRecords][NUM_OF_COLUMNS];
         List<DBObject> databaseObjectList = connection.getData();
@@ -36,17 +32,17 @@ public class Logic {
         return data;
     }
 
-    HashSet<String> getDistinctMonitoringCase() {
+    public HashSet<String> getDistinctMonitoringCase() {
         List<DBObject> databaseObjectList = connection.getData();
         return databaseObjectList.stream().map(DBObject::getMonitoringCase).collect(Collectors.toCollection(HashSet::new));
     }
 
-    HashSet<String> getDistinctNames() {
+    public HashSet<String> getDistinctNames() {
         List<DBObject> databaseObjectList = connection.getData();
         return databaseObjectList.stream().map(DBObject::getName).collect(Collectors.toCollection(HashSet::new));
     }
 
-    HashSet<String> getDistinctAgentAddress() {
+    public HashSet<String> getDistinctAgentAddress() {
         List<DBObject> databaseObjectList = connection.getData();
         return databaseObjectList.stream().map(DBObject::getAgentAddress).collect(Collectors.toCollection(HashSet::new));
     }
